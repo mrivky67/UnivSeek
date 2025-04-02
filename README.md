@@ -1,6 +1,7 @@
 # UnivSeek ✨
 
-![UnivSeek Banner](https://source.unsplash.com/1600x400/?university,library,technology)
+![UnivSeek Banner](https://raw.githubusercontent.com/mrivky67/UnivSeek/main/UnivSeek.png)
+
 
 ## 📚 Tentang UnivSeek
 
