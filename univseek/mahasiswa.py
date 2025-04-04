@@ -1,5 +1,6 @@
 import requests
 import json
+import time
 
 
 class Mahasiswa:
@@ -8,120 +9,50 @@ class Mahasiswa:
         self.nim = nim
         self.univ = univ
 
+    def _generate_query(self):
+        komponen = [self.nama, self.nim, self.univ]
+        return " ".join(filter(None, komponen))
+
+    def _tampilkan_data(self, data):
+        for item in data:
+            print("-" * 25)
+            print(f"Nama        : {item.get('nama', 'N/A')}")
+            print(f"NIM         : {item.get('nim', 'N/A')}")
+            print(f"Universitas : {item.get('nama_pt', 'N/A')}")
+            print("-" * 25)
+
+    def _simpan_ke_file(self, data):
+        with open("data_mahasiswa.json", "w", encoding="utf-8") as file:
+            json.dump(data, file, indent=4, ensure_ascii=False)
+        print("Data berhasil disimpan ke file 'data_mahasiswa.json'.")
+
     def cari_mahasiswa(self):
-        if self.nama and self.nim and self.univ:
-            print(
-                f"[>] Mencari mahasiswa dengan Nama: {self.nama}, NIM: {self.nim}, Universitas: {self.univ}"
-            )
-            query = f"{self.nama} {self.nim} {self.univ}"
-            url = f"https://api-pddikti.kemdiktisaintek.go.id/pencarian/mhs/{query}"
-            response = requests.get(url)
-            if response.status_code == 200:
-                data = response.json()
-                print("[+] Data Mahasiswa Ditemukan")
-                for item in data:
-                    nama = item.get("nama")
-                    nim = item.get("nim")
-                    univ = item.get("nama_pt")
-                print(f"Nama: {nama}")
-                print(f"NIM: {nim}")
-                print(f"Universitas: {univ}")
-                pilihan = input("[?] Apakah Anda ingin menyimpan data ke file? (y/n): ")
-                if pilihan.lower() == "y":
-                    with open("data_mahasiswa.json", "w", encoding="utf-8") as file:
-                        json.dump(data, file, indent=4, ensure_ascii=False)
-                    print("Data berhasil disimpan ke file 'data_mahasiswa.json'.")
+        query = self._generate_query()
+        if not query:
+            print("[!] Tidak ada parameter pencarian yang diberikan.")
+            return
 
-        elif self.nama and self.nim:
-            print(f"[>] Mencari mahasiswa dengan Nama: {self.nama}, NIM: {self.nim}")
-            query = f"{self.nama} {self.nim}"
-            url = f"https://api-pddikti.kemdiktisaintek.go.id/pencarian/mhs/{query}"
+        print(f"[>] Mencari mahasiswa dengan query: {query}")
+        url = f"https://api-pddikti.kemdiktisaintek.go.id/pencarian/mhs/{query}"
+        try:
             response = requests.get(url)
-            if response.status_code == 200:
-                data = response.json()
-                jmlh_data = [mhs["id"] for mhs in data]
-                print(f"[+] {len(jmlh_data)} Data Mahasiswa Ditemukan")
-                pilihan = input("[?] Apakah Anda ingin menyimpan data ke file? (y/n): ")
-                if pilihan.lower() == "y":
-                    with open("data_mahasiswa.json", "w", encoding="utf-8") as file:
-                        json.dump(data, file, indent=4, ensure_ascii=False)
-                    print("Data berhasil disimpan ke file 'data_mahasiswa.json'.")
-        elif self.nim and self.univ:
-            print(
-                f"[>] Mencari mahasiswa dengan NIM: {self.nim}, Universitas: {self.univ}"
-            )
-            query = f"{self.nim} {self.univ}"
-            url = f"https://api-pddikti.kemdiktisaintek.go.id/pencarian/mhs/{query}"
-            response = requests.get(url)
-            if response.status_code == 200:
-                data = response.json()
-                jmlh_data = [mhs["id"] for mhs in data]
-                print(f"[+] {len(jmlh_data)} Data Mahasiswa Ditemukan")
-                pilihan = input("[?] Apakah Anda ingin menyimpan data ke file? (y/n): ")
-                if pilihan.lower() == "y":
-                    with open("data_mahasiswa.json", "w", encoding="utf-8") as file:
-                        json.dump(data, file, indent=4, ensure_ascii=False)
-                    print("Data berhasil disimpan ke file 'data_mahasiswa.json'.")
-        elif self.nama and self.univ:
-            print(
-                f"[>] Mencari mahasiswa dengan Nama: {self.nama}, Universitas: {self.univ}"
-            )
-            query = f"{self.nama} {self.univ}"
-            url = f"https://api-pddikti.kemdiktisaintek.go.id/pencarian/mhs/{query}"
-            response = requests.get(url)
-            if response.status_code == 200:
-                data = response.json()
-                jmlh_data = [mhs["id"] for mhs in data]
-                print(f"[+] {len(jmlh_data)} Data Mahasiswa Ditemukan")
-                pilihan = input("[?] Apakah Anda ingin menyimpan data ke file? (y/n): ")
-                if pilihan.lower() == "y":
-                    with open("data_mahasiswa.json", "w", encoding="utf-8") as file:
-                        json.dump(data, file, indent=4, ensure_ascii=False)
-                    print("Data berhasil disimpan ke file 'data_mahasiswa.json'.")
-        elif self.nim:
-            print(f"[>] Mencari mahasiswa dengan NIM: {self.nim}")
-            query = f"{self.nim}"
-            url = f"https://api-pddikti.kemdiktisaintek.go.id/pencarian/mhs/{query}"
-            response = requests.get(url)
-            if response.status_code == 200:
-                data = response.json()
-                jmlh_data = [mhs["id"] for mhs in data]
-                print(f"[+] {len(jmlh_data)} Data Mahasiswa Ditemukan")
-                pilihan = input("[?] Apakah Anda ingin menyimpan data ke file? (y/n): ")
-                if pilihan.lower() == "y":
-                    with open("data_mahasiswa.json", "w", encoding="utf-8") as file:
-                        json.dump(data, file, indent=4, ensure_ascii=False)
-                    print("Data berhasil disimpan ke file 'data_mahasiswa.json'.")
-        elif self.nama:
-            print(f"[>] Mencari mahasiswa dengan Nama: {self.nama}")
-            query = f"{self.nama}"
-            url = f"https://api-pddikti.kemdiktisaintek.go.id/pencarian/mhs/{query}"
-            response = requests.get(url)
-            if response.status_code == 200:
-                data = response.json()
-                jmlh_data = [mhs["id"] for mhs in data]
-                print(f"[+] {len(jmlh_data)} Data Mahasiswa Ditemukan")
-                pilihan = input("[?] Apakah Anda ingin menyimpan data ke file? (y/n): ")
-                if pilihan.lower() == "y":
-                    with open("data_mahasiswa.json", "w", encoding="utf-8") as file:
-                        json.dump(
-                            data, file, indent=4, ensure_ascii=False
-                        )  # Simpan sebagai JSON
+            response.raise_for_status()
+        except requests.exceptions.RequestException as e:
+            print(f"[!] Terjadi kesalahan saat mengambil data: {e}")
+            return
 
-                    print("Data berhasil disimpan ke file 'data_mahasiswa.json'.")
-        elif self.univ:
-            print(f"[>] Mencari mahasiswa dari Universitas: {self.univ}")
-            url = f"https://api-pddikti.kemdiktisaintek.go.id/pencarian/mhs/{self.univ}"
-            response = requests.get(url)
-            if response.status_code == 200:
-                data = response.json()
-                jmlh_data = [mhs["id"] for mhs in data]
-                print(f"[+] {len(jmlh_data)} Data Mahasiswa Ditemukan")
-                pilihan = input("[?] Apakah Anda ingin menyimpan data ke file? (y/n): ")
-                if pilihan.lower() == "y":
-                    with open("data_mahasiswa.json", "w", encoding="utf-8") as file:
-                        json.dump(data, file, indent=4, ensure_ascii=False)
-                    print("Data berhasil disimpan ke file 'data_mahasiswa.json'.")
+        data = response.json()
+        if not data:
+            print("[!] Tidak ditemukan data yang cocok.")
+            return
 
+        print(f"[+] {len(data)} Data Mahasiswa Ditemukan")
+
+        pilihan = input("[?] Apakah Anda ingin menyimpan data ke file? (y/n): ").lower()
+        if pilihan == "y":
+            self._simpan_ke_file(data)
         else:
-            print("[!] Data tidak ditemukan")
+            print("[!] Data tidak disimpan.")
+            print("[!] Menampilkan data mahasiswa:")
+            time.sleep(2)
+            self._tampilkan_data(data)

@@ -26,7 +26,7 @@ def input_mahasiswa():
     univ = input(
         "[?] Masukkan Universitas (opsional, tekan Enter jika tidak ada): "
     ).strip()
-    cari_mahasiswa(nama, int(nim) if nim.isdigit() else None, univ or None)
+    cari_mahasiswa(nama, nim or None, univ or None)
 
 
 def input_dosen():
@@ -35,7 +35,7 @@ def input_dosen():
     univ = input(
         "[?] Masukkan Universitas (opsional, tekan Enter jika tidak ada): "
     ).strip()
-    cari_dosen(nama, int(nidn) if nidn.isdigit() else None, univ or None)
+    cari_dosen(nama, nidn or None, univ or None)
 
 
 def input_universitas():
