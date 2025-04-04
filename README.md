@@ -88,6 +88,9 @@ Anda akan disambut dengan menu interaktif:
 - **Muhammad Rivky** - *Developer*
 - **UnivSeek Community** - *Feedback & Support*
 
+## Preview
+![UnivSeek Preview](preview/preview.gif)
+
 
 ## 📈 Lisensi
 Proyek ini dirilis di bawah lisensi **MIT License**. Silakan gunakan dan kontribusi!
